@@ -1,6 +1,6 @@
 import csv
 import os
-import pandas as import pd
+#import pandas
 
 csv_file_path = "data/keywordstats.csv"  #TODO - Make Dynamic
 
