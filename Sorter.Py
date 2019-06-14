@@ -4,6 +4,7 @@ import pandas
 
 csv_file_path = 'data/keywordstats4.csv'  #TODO - Make Dynamic
 campaign_csv_file_path = 'data/Campaign-Rules.csv'
+write_csv_file_path = 'build/adgroups.csv'
 
 #TODO DEFINE FUNCTIONS WHICH I CAN CALL FROM INSIDE WHILE LOOP TO CREATE CSV
 
@@ -25,7 +26,12 @@ def campaign_lookup_function2(inputkeywordlist):
         else:
             pass
             
-
+def adgroup_lookup_function(inputgroupkeyword):
+    #Logic: 
+    # kwindex = inputkeyword.split()
+    # for term in kwindex
+    #group = i["group"] if i["identifying term"] == term
+    return("asf")
 
 
 
@@ -41,11 +47,11 @@ df = pandas.read_csv(csv_file_path, encoding='utf-8')
 
 print(df)
 rows = df.to_dict("records")
-print(r for r in rows)
-print("")
-keywords = [r['Keyword'] for r in rows]
-searches = [r['Avg. monthly searches'] for r in rows]
-print(keywords[0],",",searches[0])
+#print("")
+#keywords = [r['Keyword'] for r in rows]
+#kw = keywords[5] 
+#searches = [r['Avg. monthly searches'] for r in rows]
+#print(keywords[0],",",searches[0])
 #print(keywords)
 
 #SETTING UP CAMPAIGNS
@@ -56,24 +62,31 @@ symptoms = [r['Symptoms'] for r in campaigns]
 condition = [r['Condition'] for r in campaigns]
 
 
-kw = keywords[5] 
-#kw = "park side"
-print(kw)
-kwlookuplist = kw.split()
-print(kwlookuplist)
+for r in rows:
+    kw = [r['Keyword']] #for r in rows]
+    searches = [r['Avg. monthly searches']] #for r in rows]
+    kw = kw[0]
+    searches = searches[0]
+    kwlookuplist = kw.split()
+    print(kwlookuplist)
 
-kwcampaign = campaign_lookup_function(kwlookuplist)
-print("campaign1 = " + kwcampaign)
-if kwcampaign not in ["Symptoms", "Treatment"]:
-    kwcampaign = campaign_lookup_function2(kwlookuplist)
-    
-else:
-    pass
+    kwcampaign = campaign_lookup_function(kwlookuplist)
+    #print("campaign1 = " + kwcampaign)
+    if kwcampaign not in ["Symptoms", "Treatment"]:
+        kwcampaign = campaign_lookup_function2(kwlookuplist)
 
-if kwcampaign not in ["Symptoms", "Treatment", "Condition"]:
-   kwcampaign = "Unclassified"
-else:
-    pass
+    else:
+        pass
 
-print(kwcampaign)
-print("done")
+    if kwcampaign not in ["Symptoms", "Treatment", "Condition"]:
+       kwcampaign = "Unclassified"
+    else:
+        pass
+
+    print(kw + kwcampaign + str(searches))
+    print("")
+
+    with open(write_csv_file_path, "w") as csv_file: # "w" means "open the file for writing"
+        writer = csv.DictWriter(csv_file, fieldnames=["Keyword", "Campaign"])
+        writer.writeheader() # uses fieldnames set above
+        writer.writerow({"Keyword": kw, "Campaign": kwcampaign})
