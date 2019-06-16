@@ -61,6 +61,11 @@ treatment = [r['Treatment'] for r in campaigns]
 symptoms = [r['Symptoms'] for r in campaigns]
 condition = [r['Condition'] for r in campaigns]
 
+with open(write_csv_file_path, "w", newline='') as csv_file: # "w" means "open the file for writing"
+        writer = csv.DictWriter(csv_file, fieldnames=["Keyword", "Campaign"])
+        writer.writeheader() # uses fieldnames set above
+        #writer.writerow({"Keyword": "test", "Campaign": "test"})
+
 
 for r in rows:
     kw = [r['Keyword']] #for r in rows]
@@ -74,10 +79,8 @@ for r in rows:
     #print("campaign1 = " + kwcampaign)
     if kwcampaign not in ["Symptoms", "Treatment"]:
         kwcampaign = campaign_lookup_function2(kwlookuplist)
-
     else:
         pass
-
     if kwcampaign not in ["Symptoms", "Treatment", "Condition"]:
        kwcampaign = "Unclassified"
     else:
@@ -86,7 +89,7 @@ for r in rows:
     print(kw + kwcampaign + str(searches))
     print("")
 
-    with open(write_csv_file_path, "w") as csv_file: # "w" means "open the file for writing"
+    with open(write_csv_file_path, "a", newline='') as csv_file: # "w" means "open the file for writing"
         writer = csv.DictWriter(csv_file, fieldnames=["Keyword", "Campaign"])
-        writer.writeheader() # uses fieldnames set above
         writer.writerow({"Keyword": kw, "Campaign": kwcampaign})
+
