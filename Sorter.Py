@@ -5,6 +5,7 @@ import pandas
 csv_file_path = 'data/keywordstats4.csv'  #TODO - Make Dynamic
 campaign_csv_file_path = 'data/Campaign-Rules.csv'
 write_csv_file_path = 'build/adgroups.csv'
+group_csv_file_path = 'data/Group-Rules.csv'
 
 #TODO DEFINE FUNCTIONS WHICH I CAN CALL FROM INSIDE WHILE LOOP TO CREATE CSV
 
@@ -28,7 +29,9 @@ def campaign_lookup_function2(inputkeywordlist):
             
 def adgroup_lookup_function(inputgroupkeyword):
     #Logic: 
-    # kwindex = inputkeyword.split()
+   # for g in inputgroupkeyword:
+   #     group = [x["Ad Group"] for x in adgroupsorter if "Term" == g]
+   #     return(group)
     # for term in kwindex
     #group = i["group"] if i["identifying term"] == term
     return("asf")
@@ -61,12 +64,18 @@ treatment = [r['Treatment'] for r in campaigns]
 symptoms = [r['Symptoms'] for r in campaigns]
 condition = [r['Condition'] for r in campaigns]
 
+#SETTING UP GROUPS
+dfgroup = pandas.read_csv(group_csv_file_path, encoding='utf-8')
+adgroups = dfgroup.to_dict("records") 
+print(adgroups)
+
+
 with open(write_csv_file_path, "w", newline='') as csv_file: # "w" means "open the file for writing"
-        writer = csv.DictWriter(csv_file, fieldnames=["Keyword", "Campaign"])
+        writer = csv.DictWriter(csv_file, fieldnames=["Keyword", "Campaign", "Avg Monthly Searches"])
         writer.writeheader() # uses fieldnames set above
         #writer.writerow({"Keyword": "test", "Campaign": "test"})
 
-
+#CAMPAIGN SORTER AND ORGANIZER - WRITE CSV
 for r in rows:
     kw = [r['Keyword']] #for r in rows]
     searches = [r['Avg. monthly searches']] #for r in rows]
@@ -85,11 +94,13 @@ for r in rows:
        kwcampaign = "Unclassified"
     else:
         pass
+    
+    #kwgroup = adgroup_lookup_function(kwlookuplist)
 
     print(kw + kwcampaign + str(searches))
     print("")
 
     with open(write_csv_file_path, "a", newline='') as csv_file: # "w" means "open the file for writing"
-        writer = csv.DictWriter(csv_file, fieldnames=["Keyword", "Campaign"])
-        writer.writerow({"Keyword": kw, "Campaign": kwcampaign})
+        writer = csv.DictWriter(csv_file, fieldnames=["Keyword", "Campaign", "Avg Monthly Searches"])
+        writer.writerow({"Keyword": kw, "Campaign": kwcampaign, "Avg Monthly Searches": searches})
 
