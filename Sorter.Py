@@ -3,8 +3,8 @@ import os
 import statistics
 import pandas
 
-csv_file_path = 'data/keywordstats4.csv'  #TODO - Make Dynamic
-campaign_csv_file_path = 'data/Campaign-Rules.csv'
+csv_file_path = 'data/keywordstats4.csv'  #TODO - Make Dynamic user input
+campaign_csv_file_path = 'data/Campaign-Rules.csv' #TODO: Use OS relative file paths
 write_csv_file_path = 'build/adgroups.csv'
 group_csv_file_path = 'data/Group-Rules.csv'
 
@@ -36,8 +36,6 @@ def adgroup_lookup_function(inputgroupkeyword):
     #group = i["group"] if i["identifying term"] == term
     
 
-
-
 #CSV READER CODE
     # #with open(csv_file_path, "r") as csv_file: # Code from class repository
     #    reader = csv.DictReader(csv_file) # assuming your CSV has headers
@@ -47,20 +45,14 @@ def adgroup_lookup_function(inputgroupkeyword):
     #df = pandas.read_csv(csv_file_path, skiprows=2, nrows=50, encoding='utf-8')
 
 df = pandas.read_csv(csv_file_path, encoding='utf-8')
-
+#df = pandas.read_csv(csv_file_path)
 print(df)
 rows = df.to_dict("records")
-#print("")
-#keywords = [r['Keyword'] for r in rows]
-#kw = keywords[5] 
-#searches = [r['Avg. monthly searches'] for r in rows]
-#print(keywords[0],",",searches[0])
-#print(keywords)
 
 #SETTING UP CAMPAIGNS
 dfg = pandas.read_csv(campaign_csv_file_path, encoding='utf-8')
 campaigns = dfg.to_dict("records")
-treatment = [r['Treatment'] for r in campaigns]
+treatment = [r['Treatment'] for r in campaigns]   #list of terms to define as treatment
 symptoms = [r['Symptoms'] for r in campaigns]
 condition = [r['Condition'] for r in campaigns]
 
@@ -74,13 +66,14 @@ with open(write_csv_file_path, "w", newline='') as csv_file: # "w" means "open t
         #writer.writerow({"Keyword": "test", "Campaign": "test"})
 
 #CAMPAIGN SORTER AND ORGANIZER - WRITE CSV
+# THIS IS THE BULK OF THE PROGRAM
 for r in rows:
     kw = [r['Keyword']] #for r in rows]
     searches = [r['Avg. monthly searches']] #for r in rows]
     kw = kw[0]
     searches = searches[0]
     kwlookuplist = kw.split()
-    print(kwlookuplist)
+    #print(kwlookuplist)
 
     kwcampaign = campaign_lookup_function(kwlookuplist)
     #print("campaign1 = " + kwcampaign)
@@ -96,10 +89,6 @@ for r in rows:
     kwgroup = adgroup_lookup_function(kwlookuplist)
     writegroup = ''.join(str(e) for e in kwgroup)
 
-    print(kw + kwcampaign + str(searches))
-    print(kwgroup)
-    print(writegroup)
-    print("")
 
     with open(write_csv_file_path, "a", newline='') as csv_file: # "w" means "open the file for writing"
         writer = csv.DictWriter(csv_file, fieldnames=["Keyword", "Campaign", "Group", "Avg Monthly Searches"])
@@ -111,11 +100,45 @@ for r in rows:
 dfx = pandas.read_csv(write_csv_file_path, encoding='utf-8')
 buildout = dfx.to_dict("records")
 
-treatment_kwvol = [b["Avg Monthly Searches"] for b in buildout]
+treatment_kwvol = [b["Avg Monthly Searches"] for b in buildout if b["Campaign"] == 'Treatment']
 treatment_volume = sum(treatment_kwvol)
+condition_kwvol = [b["Avg Monthly Searches"] for b in buildout if b["Campaign"] == 'Condition']
+condition_volume = sum(condition_kwvol)
+symptoms_kwvol = [b["Avg Monthly Searches"] for b in buildout if b["Campaign"] == 'Symptoms']
+symptoms_volume = sum(symptoms_kwvol)
 
-print("---------------------------------------------")
-print("Search Volume and Expected Traffic By Campaign")
-print("---------------------------------------------")
-print("Treatment :")
-print(treatment_volume)
+ctr = .03  #TODO : Make CTR and CPC a user input
+cpc = 3    #TODO : Make CTR and CPC a user input
+
+
+
+#PRINT THE TOTAL VOLUME
+while True: #creating while function for purposes of minimizing code
+    print("")
+    print("--------------------------------------------------------")
+    print("Projected Search Volume and Expected Traffic By Campaign")
+    print("--------------------------------------------------------")
+    print("Total Volume :" + str(treatment_volume + condition_volume + symptoms_volume))
+    #PRINT SYMPTOMS
+    print("")
+    print("Symptoms")
+    print("Impressions : " + str(condition_volume))
+    print("Clicks : " + str(condition_volume * ctr))
+    print("Cost : $" + str(condition_volume * ctr * cpc))
+    #PRINT CONDITION
+    print("")
+    print("Condition : ")
+    print("Impressions : " + str(symptoms_volume))
+    print("Clicks : " + str(symptoms_volume * ctr))
+    print("Cost : $" + str(symptoms_volume * ctr * cpc))
+    print("")
+
+    #PRINT TREATMENT
+    print("Treatment :")
+    print("Impressions : " + str(treatment_volume))
+    print("Clicks : " + str(treatment_volume * ctr))
+    print("Cost : $" + str(treatment_volume * ctr * cpc))
+    break
+
+
+print("done")
