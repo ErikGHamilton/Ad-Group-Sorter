@@ -1,5 +1,6 @@
 import csv
 import os
+import statistics
 import pandas
 
 csv_file_path = 'data/keywordstats4.csv'  #TODO - Make Dynamic
@@ -28,13 +29,12 @@ def campaign_lookup_function2(inputkeywordlist):
             pass
             
 def adgroup_lookup_function(inputgroupkeyword):
-    #Logic: 
-   # for g in inputgroupkeyword:
-   #     group = [x["Ad Group"] for x in adgroupsorter if "Term" == g]
-   #     return(group)
+    for x in adgroups:
+        returngroup = [x["Ad Group"] for x in adgroups if x["Term"] in inputgroupkeyword]
+        return(returngroup)
     # for term in kwindex
     #group = i["group"] if i["identifying term"] == term
-    return("asf")
+    
 
 
 
@@ -67,11 +67,9 @@ condition = [r['Condition'] for r in campaigns]
 #SETTING UP GROUPS
 dfgroup = pandas.read_csv(group_csv_file_path, encoding='utf-8')
 adgroups = dfgroup.to_dict("records") 
-print(adgroups)
-
 
 with open(write_csv_file_path, "w", newline='') as csv_file: # "w" means "open the file for writing"
-        writer = csv.DictWriter(csv_file, fieldnames=["Keyword", "Campaign", "Avg Monthly Searches"])
+        writer = csv.DictWriter(csv_file, fieldnames=["Keyword", "Campaign", "Group", "Avg Monthly Searches"])
         writer.writeheader() # uses fieldnames set above
         #writer.writerow({"Keyword": "test", "Campaign": "test"})
 
@@ -95,12 +93,29 @@ for r in rows:
     else:
         pass
     
-    #kwgroup = adgroup_lookup_function(kwlookuplist)
+    kwgroup = adgroup_lookup_function(kwlookuplist)
+    writegroup = ''.join(str(e) for e in kwgroup)
 
     print(kw + kwcampaign + str(searches))
+    print(kwgroup)
+    print(writegroup)
     print("")
 
     with open(write_csv_file_path, "a", newline='') as csv_file: # "w" means "open the file for writing"
-        writer = csv.DictWriter(csv_file, fieldnames=["Keyword", "Campaign", "Avg Monthly Searches"])
-        writer.writerow({"Keyword": kw, "Campaign": kwcampaign, "Avg Monthly Searches": searches})
+        writer = csv.DictWriter(csv_file, fieldnames=["Keyword", "Campaign", "Group", "Avg Monthly Searches"])
+        writer.writerow({"Keyword": kw, "Campaign": kwcampaign, "Group": writegroup, "Avg Monthly Searches": searches})
 
+
+#OUTPUT THE VOLUME PER CAMPAIGN
+
+dfx = pandas.read_csv(write_csv_file_path, encoding='utf-8')
+buildout = dfx.to_dict("records")
+
+treatment_kwvol = [b["Avg Monthly Searches"] for b in buildout]
+treatment_volume = sum(treatment_kwvol)
+
+print("---------------------------------------------")
+print("Search Volume and Expected Traffic By Campaign")
+print("---------------------------------------------")
+print("Treatment :")
+print(treatment_volume)
