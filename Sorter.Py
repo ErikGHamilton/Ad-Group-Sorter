@@ -3,7 +3,7 @@ import os
 import statistics
 import pandas
 
-csv_file_path = 'data/keywordstats4.csv'  #TODO - Make Dynamic user input
+csv_file_path = 'data/keywordstats5.csv'  #TODO - Make Dynamic user input
 campaign_csv_file_path = 'data/Campaign-Rules.csv' #TODO: Use OS relative file paths
 write_csv_file_path = 'build/adgroups.csv'
 group_csv_file_path = 'data/Group-Rules.csv'
