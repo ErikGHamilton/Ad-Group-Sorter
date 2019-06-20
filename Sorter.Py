@@ -3,12 +3,11 @@ import os
 import statistics
 import pandas
 
-csv_file_path = 'data/keywordstats5.csv'  #TODO - Make Dynamic user input
+csv_file_path = 'data/keywordstats5.csv'  #TODO - Make Dynamic user input or pull from API
 campaign_csv_file_path = 'data/Campaign-Rules.csv' #TODO: Use OS relative file paths
 write_csv_file_path = 'build/adgroups.csv'
 group_csv_file_path = 'data/Group-Rules.csv'
 
-#TODO DEFINE FUNCTIONS WHICH I CAN CALL FROM INSIDE WHILE LOOP TO CREATE CSV
 
 def campaign_lookup_function(inputkeywordlist):
     for k in inputkeywordlist:
@@ -54,12 +53,13 @@ dfg = pandas.read_csv(campaign_csv_file_path, encoding='utf-8')
 campaigns = dfg.to_dict("records")
 treatment = [r['Treatment'] for r in campaigns]   #list of terms to define as treatment
 symptoms = [r['Symptoms'] for r in campaigns]
-condition = [r['Condition'] for r in campaigns]
+condition = [r['Condition'] for r in campaigns]   #TODO Make Condition Dynamic/User Inputted
 
 #SETTING UP GROUPS
 dfgroup = pandas.read_csv(group_csv_file_path, encoding='utf-8')
 adgroups = dfgroup.to_dict("records") 
 
+#CREATE CSV
 with open(write_csv_file_path, "w", newline='') as csv_file: # "w" means "open the file for writing"
         writer = csv.DictWriter(csv_file, fieldnames=["Keyword", "Campaign", "Group", "Avg Monthly Searches"])
         writer.writeheader() # uses fieldnames set above
