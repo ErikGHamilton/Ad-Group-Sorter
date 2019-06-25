@@ -4,7 +4,7 @@ from googleads import adwords
 
 # Initialize the AdWords client.
 #adwords_client = adwords.AdWordsClient.LoadFromStorage()
-adwords_client = adwords.AdWordsClient.LoadFromStorage("yaml/googleads.yaml")
+adwords_client = adwords.AdWordsClient.LoadFromStorage("yaml/googleads2.yaml")
 
 targeting_idea_service = adwords_client.GetService('TargetingIdeaService', version='v201809')
 
@@ -48,7 +48,18 @@ for result in page['entries']:
     attributes[attribute['key']] = getattr(
         attribute['value'], 'value', '0')
   print ('Keyword with "%s" text and average monthly search volume '
-         '"%s" was found with Products and Services categories: %s.'
+         '"%s" was found with Avg CPC: %s.'
          % (attributes['KEYWORD_TEXT'],
             attributes['SEARCH_VOLUME'],
-            attributes['CATEGORY_PRODUCTS_AND_SERVICES']))
+            attributes['AVERAGE_CPC']))
+
+print("ASDF")
+print("ASDF")
+print("ASDF")
+
+
+parse_entries = page['entries']
+
+for p,v in parse_entries.items():
+    print("P = ", p)
+    print("V = ", v)
