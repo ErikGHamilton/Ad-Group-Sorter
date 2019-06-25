@@ -72,7 +72,7 @@ with open(write_csv_file_path, "w", newline='') as csv_file: # "w" means "open t
 
 #TRYING OUT USING THE ADWORDS FUNCTION HERE
 rows = get_adwords_keywords(rows)
-breakpoint()
+#breakpoint()
 
 
 
@@ -108,7 +108,7 @@ for r in rows:
 
 #OUTPUT THE VOLUME PER CAMPAIGN
 
-dfx = pandas.read_csv(write_csv_file_path, encoding='utf-8')
+dfx = pandas.read_csv(write_csv_file_path) #, encoding='utf-8')
 buildout = dfx.to_dict("records")
 
 treatment_kwvol = [b["Avg Monthly Searches"] for b in buildout if b["Campaign"] == 'Treatment']
