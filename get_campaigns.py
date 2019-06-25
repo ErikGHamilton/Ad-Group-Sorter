@@ -66,7 +66,7 @@ def main(client):
 
 if __name__ == '__main__':
   #adwords_client = adwords.AdWordsClient.LoadFromStorage()
-  adwords_client = adwords.AdWordsClient.LoadFromStorage("yaml/googleads.yaml")
+  adwords_client = adwords.AdWordsClient.LoadFromStorage("yaml/googleads2.yaml")
   main(adwords_client)
 
 #if __name__ == '__main__':
