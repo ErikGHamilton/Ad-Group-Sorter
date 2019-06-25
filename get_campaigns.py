@@ -35,6 +35,7 @@ PAGE_SIZE = 100
 def main(client):
   # Initialize appropriate service.
   campaign_service = client.GetService('CampaignService', version='v201809')
+  
 
   # Construct selector and get all campaigns.
   offset = 0
@@ -63,10 +64,11 @@ def main(client):
     more_pages = offset < int(page['totalNumEntries'])
 
 
-#if __name__ == '__main__':
-  adwords_client = adwords.AdWordsClient.LoadFromStorage()
+if __name__ == '__main__':
+  #adwords_client = adwords.AdWordsClient.LoadFromStorage()
+  adwords_client = adwords.AdWordsClient.LoadFromStorage("yaml/googleads.yaml")
   main(adwords_client)
 
 #if __name__ == '__main__':
-adwords_client = adwords.AdWordsClient.LoadFromStorage()
-main(adwords_client)
+#adwords_client = adwords.AdWordsClient.LoadFromStorage()
+#main(adwords_client)
