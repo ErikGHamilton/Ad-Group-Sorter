@@ -1,9 +1,13 @@
+import uuid
 from googleads import adwords
 
 
 # Initialize the AdWords client.
 adwords_client = adwords.AdWordsClient.LoadFromStorage()
 
+
+
+PAGE_SIZE = 100
 
 # BELOW CODE FROM GOOGLE
 # https://developers.google.com/adwords/api/docs/guides/targeting-idea-service
