@@ -104,3 +104,4 @@ venv.bak/
 .mypy_cache/
 yaml/googleads.yaml
 secret/client_secret_170842982163-etss4juoao7cf332i83d6f8i77a1sg3c.apps.googleusercontent.com.json
+yaml/googleads2.yaml
