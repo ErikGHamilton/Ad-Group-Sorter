@@ -2,6 +2,10 @@ import csv
 import os
 import statistics
 import pandas
+import uuid
+from googleads import adwords
+from get_keywords_func import get_adwords_keywords
+
 
 csv_file_path = 'data/keywordstats8.csv'  #TODO - Make Dynamic user input or pull from API
 campaign_csv_file_path = 'data/Campaign-Rules.csv' #TODO: Use OS relative file paths
@@ -45,7 +49,7 @@ def adgroup_lookup_function(inputgroupkeyword):
 
 df = pandas.read_csv(csv_file_path, encoding='utf-8')
 #df = pandas.read_csv(csv_file_path)
-print(df)
+#print(df)
 rows = df.to_dict("records")
 
 #SETTING UP CAMPAIGNS
@@ -64,6 +68,13 @@ with open(write_csv_file_path, "w", newline='') as csv_file: # "w" means "open t
         writer = csv.DictWriter(csv_file, fieldnames=["Keyword", "Campaign", "Group", "Avg Monthly Searches"])
         writer.writeheader() # uses fieldnames set above
         #writer.writerow({"Keyword": "test", "Campaign": "test"})
+
+
+#TRYING OUT USING THE ADWORDS FUNCTION HERE
+rows = get_adwords_keywords(rows)
+breakpoint()
+
+
 
 #CAMPAIGN SORTER AND ORGANIZER - WRITE CSV
 # THIS IS THE BULK OF THE PROGRAM
