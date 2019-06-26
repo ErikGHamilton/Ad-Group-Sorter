@@ -9,7 +9,7 @@ from get_keywords_func import get_adwords_keywords
 
 csv_file_path = 'data/keywordstats8.csv'  #TODO - Make Dynamic user input or pull from API
 campaign_csv_file_path = 'data/Campaign-Rules.csv' #TODO: Use OS relative file paths
-write_csv_file_path = 'build/adgroups.csv'
+write_csv_file_path = 'build/adgroups3.csv'
 group_csv_file_path = 'data/Group-Rules.csv'
 
 
