@@ -11,7 +11,7 @@ def get_adwords_keywords(input_array):
 
     targeting_idea_service = adwords_client.GetService('TargetingIdeaService', version='v201809')
 
-    PAGE_SIZE = 500
+    PAGE_SIZE = 700
 
     # BELOW CODE FROM GOOGLE
     # https://developers.google.com/adwords/api/docs/guides/targeting-idea-service
