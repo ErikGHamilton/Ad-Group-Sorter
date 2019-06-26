@@ -5,7 +5,7 @@ from googleads import adwords
 # Initialize the AdWords client.
 #adwords_client = adwords.AdWordsClient.LoadFromStorage()
 
-def get_adwords_keywords(send_input):
+def get_adwords_keywords(input_array):
 
     adwords_client = adwords.AdWordsClient.LoadFromStorage("yaml/googleads2.yaml")   #MAKE DYNAMIC WITH OS
 
@@ -32,22 +32,22 @@ def get_adwords_keywords(send_input):
         'numberResults': str(PAGE_SIZE)
     }
 
-    print("-----------------------------------------------------------------")
-    print("-----------------------------------------------------------------")
-    print("Welcome to the Ad Group Sorter")
-    print("-----------------------------------------------------------------")
-    print("-----------------------------------------------------------------")
-    #INPUT THE QUERIES
-    input_array = []
-    finished_entering = False
-    while not finished_entering:
-        user_input = input("Please Enter A Keyword Idea and Type DONE When Finished:   ")
-        if user_input == "done" or user_input == "DONE" or user_input == "Done":
-            finished_entering = True
-        else:
-            input_array.append(user_input)
-
-    #breakpoint()
+    #print("-----------------------------------------------------------------")
+    #print("-----------------------------------------------------------------")
+    #print("Welcome to the Ad Group Sorter")
+    #print("-----------------------------------------------------------------")
+    #print("-----------------------------------------------------------------")
+    ##INPUT THE QUERIES
+    #input_array = []
+    #finished_entering = False
+    #while not finished_entering:
+    #    user_input = input("Please Enter A Keyword Idea and Type DONE When Finished:   ")
+    #    if user_input == "done" or user_input == "DONE" or user_input == "Done":
+    #        finished_entering = True
+    #    else:
+    #        input_array.append(user_input)
+#
+    ##breakpoint()
 
 
     selector['searchParameters'] = [{
@@ -67,13 +67,7 @@ def get_adwords_keywords(send_input):
         attributes[attribute['key']] = getattr(
             attribute['value'], 'value', '0')
 
-
-
-      #print ('Keyword with "%s" text and average monthly search volume '
-      #       '"%s" was found with Avg CPC: %s.'
-      #       % (attributes['KEYWORD_TEXT'],
-      #          attributes['SEARCH_VOLUME'],
-      #          attributes['AVERAGE_CPC']))
+      #Below is my code to create my list
     
       kwrow = {
           "Keyword": attributes['KEYWORD_TEXT'],
@@ -81,15 +75,6 @@ def get_adwords_keywords(send_input):
       }
       keyword_list.append(kwrow)
 
-    #parse_entries = page['entries']
-    #print(parse_entries)
-
-    #for r in keyword_list:
-    #    kw = r['Keyword']
-    #    searches = r['Avg. monthly searches']
-    #    print(kw + " " + str(searches))
-    #    breakpoint()
-    #   # print("Keyword: "+ kw + " and Searches:" + searches)
 
     #print(keyword_list)
     return(keyword_list)
