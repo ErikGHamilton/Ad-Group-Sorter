@@ -13,6 +13,31 @@ write_csv_file_path = 'build/adgroups.csv'
 group_csv_file_path = 'data/Group-Rules.csv'
 
 
+def get_user_input():
+    print("-----------------------------------------------------------------")
+    print("-----------------------------------------------------------------")
+    print("Welcome to the Ad Group Sorter")
+    print("-----------------------------------------------------------------")
+    print("-----------------------------------------------------------------")
+    print("Instructions: Enter in the primary condition keywords for your account")
+    print("(e.g. diabetes, adhd, what is insomnia")
+    print("Input four or five terms for best results but do not include treatment or symptoms terms")
+    print("-----------------------------------------------------------------")
+    print("-----------------------------------------------------------------")
+    print("")
+    #INPUT THE QUERIES
+    input_array = []
+    finished_entering = False
+    while not finished_entering:
+        user_input = input("Please Enter A Keyword Idea and Type DONE When Finished:   ")
+        if user_input == "done" or user_input == "DONE" or user_input == "Done":
+            finished_entering = True
+        else:
+            input_array.append(user_input)
+    return(input_array)
+
+
+
 def campaign_lookup_function(inputkeywordlist):
     for k in inputkeywordlist:
         #breakpoint()
@@ -48,8 +73,6 @@ def adgroup_lookup_function(inputgroupkeyword):
     #df = pandas.read_csv(csv_file_path, skiprows=2, nrows=50, encoding='utf-8')
 
 df = pandas.read_csv(csv_file_path, encoding='utf-8')
-#df = pandas.read_csv(csv_file_path)
-#print(df)
 rows = df.to_dict("records")
 
 #SETTING UP CAMPAIGNS
@@ -57,7 +80,9 @@ dfg = pandas.read_csv(campaign_csv_file_path, encoding='utf-8')
 campaigns = dfg.to_dict("records")
 treatment = [r['Treatment'] for r in campaigns]   #list of terms to define as treatment
 symptoms = [r['Symptoms'] for r in campaigns]
-condition = [r['Condition'] for r in campaigns]   #TODO Make Condition Dynamic/User Inputted
+#condition = [r['Condition'] for r in campaigns]   
+#Making the user input = condition so that it is more dynamic - see row ~100
+
 
 #SETTING UP GROUPS
 dfgroup = pandas.read_csv(group_csv_file_path, encoding='utf-8')
@@ -70,14 +95,18 @@ with open(write_csv_file_path, "w", newline='') as csv_file: # "w" means "open t
         #writer.writerow({"Keyword": "test", "Campaign": "test"})
 
 
-#TRYING OUT USING THE ADWORDS FUNCTION HERE
-rows = get_adwords_keywords(rows)
-#breakpoint()
+#GET USER INPUT
+
+input_array = get_user_input()
+condition = input_array #Definining my condition terms as the user input
+
+#SEND TO ADWORDS - Send user input and get back rows (the keywords / search volume)
+rows = get_adwords_keywords(input_array)
 
 
 
 #CAMPAIGN SORTER AND ORGANIZER - WRITE CSV
-# THIS IS THE BULK OF THE PROGRAM
+# THIS IS THE BULK OF THE PROGRAM !!! Important
 for r in rows:
     kw = [r['Keyword']] #for r in rows]
     searches = [r['Avg. monthly searches']] #for r in rows]
@@ -107,8 +136,7 @@ for r in rows:
 
 
 #OUTPUT THE VOLUME PER CAMPAIGN
-
-dfx = pandas.read_csv(write_csv_file_path, encoding='latin1') #, encoding='utf-8')
+dfx = pandas.read_csv(write_csv_file_path, encoding='latin1') #latin1 since i was having ascii issues 
 buildout = dfx.to_dict("records")
 
 treatment_kwvol = [b["Avg Monthly Searches"] for b in buildout if b["Campaign"] == 'Treatment']
