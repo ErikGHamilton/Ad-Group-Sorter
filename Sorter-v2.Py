@@ -11,11 +11,8 @@ from get_keywords_func import get_adwords_keywords
 today = datetime.now().strftime('%Y-%m-%d')
 hour = datetime.now().strftime('%H-%M')
 
-#csv_file_path = 'data/keywordstats8.csv'  #TODO - Make Dynamic user input or pull from API
-#campaign_csv_file_path = 'data/Campaign-Rules.csv' #TODO: Use OS relative file paths
+
 campaign_csv_file_path = os.path.join(os.path.dirname(__file__), "data", "Campaign-Rules.csv")
-#write_csv_file_path = 'build/adgroups3.csv'
-#group_csv_file_path = 'data/Group-Rules.csv'
 group_csv_file_path = os.path.join(os.path.dirname(__file__), "data", "Group-Rules.csv")
 
 
@@ -67,8 +64,7 @@ def adgroup_lookup_function(inputgroupkeyword):
     for x in adgroups:
         returngroup = [x["Ad Group"] for x in adgroups if x["Term"] in inputgroupkeyword]
         return(returngroup)
-    # for term in kwindex
-    #group = i["group"] if i["identifying term"] == term
+    
     
 
 #SETTING UP CAMPAIGNS
@@ -76,8 +72,6 @@ dfg = pandas.read_csv(campaign_csv_file_path, encoding='utf-8')
 campaigns = dfg.to_dict("records")
 treatment = [r['Treatment'] for r in campaigns]   #list of terms to define as treatment
 symptoms = [r['Symptoms'] for r in campaigns]
-#condition = [r['Condition'] for r in campaigns]   
-#Making the user input = condition so that it is more dynamic - see row ~100
 
 
 #SETTING UP GROUPS
@@ -86,7 +80,6 @@ adgroups = dfgroup.to_dict("records")
 
 
 #GET USER INPUT
-
 input_array = get_user_input()
 condition = input_array #Definining my condition terms as the user input
 
@@ -108,7 +101,6 @@ while not api_success:
         time.sleep(15)
 
 #CREATE CSV
-
 today_condition = today + hour + input_array[0] + ".csv"
 write_csv_file_path = os.path.join(os.path.dirname(__file__), "build", today_condition)
 
