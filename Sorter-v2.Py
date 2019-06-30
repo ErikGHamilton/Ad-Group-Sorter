@@ -93,14 +93,19 @@ condition = input_array #Definining my condition terms as the user input
 #SEND TO ADWORDS - Send user input and get back rows (the keywords / search volume)
 #ADDED IN TRY/Except per prof suggestions
 
-try:
-    rows = get_adwords_keywords(input_array)
-except:
-    print("There has been an error - likely due to overloading of the Google Ads API")
-    print("Trying again in 30 seconds")
-    time.sleep(15)
-    print("Trying again in 15 seconds")
-    time.sleep(15)
+api_success = False
+while not api_success:
+    try:
+        rows = get_adwords_keywords(input_array)
+        print("The Google Ads API call was a success")
+        api_success = True
+    except:
+        print("Apologies for the delay while we call the Google Ads API")
+        #print("There has been an error - likely due to overloading of the Google Ads API")
+        #print("Trying again in 30 seconds")
+        time.sleep(15)
+        #print("Trying again in 15 seconds")
+        time.sleep(15)
 
 #CREATE CSV
 
@@ -192,9 +197,9 @@ total_cost = round(total_cost,2)
 #PRINT THE TOTAL VOLUME
 while True: #creating while function for purposes of minimizing code
     print("")
-    print("--------------------------------------------------------")
-    print("Projected Search Volume and Expected Traffic By Campaign")
-    print("--------------------------------------------------------")
+    print("----------------------------------------------------------------")
+    print("Projected Monthly Search Volume and Expected Traffic By Campaign")
+    print("----------------------------------------------------------------")
     print("Campaign Totals: ")
     print("Impressions :" + str(total_volume))
     print("Clicks :" + str(total_clicks))
@@ -218,7 +223,20 @@ while True: #creating while function for purposes of minimizing code
     print("Impressions : " + str(treatment_volume))
     print("Clicks : " + str(treatment_clicks))
     print("Cost : $" + str(treatment_cost))
+
+    #Print Yearly Volume
+    print("----------------------------------------------------------------")
+    print("Projected Yearly Search Volume and Expected Traffic")
+    print("----------------------------------------------------------------")
+    print("Campaign Totals: ")
+    print("Impressions :" + str(round(total_volume * 12,2)))
+    print("Clicks :" + str(round(total_clicks * 12,2)))
+    print("Cost : $" + str(round(total_cost * 12,2)))
+
     break
 
 
-print("done")
+print("")
+print("----------------------------------------------------------------")
+print("----------------------------------------------------------------")
+print("")
