@@ -26,7 +26,7 @@ def get_user_input():
     print("Instructions: ")
     print("   Enter in the primary condition keywords for your account")
     print("   (e.g. diabetes, parkinsons, what is insomnia)")
-    print("   Input four or five terms for best results but do not include treatment or symptoms terms")
+    print("   Input four or five terms for best results")
     print("-----------------------------------------------------------------")
     print("-----------------------------------------------------------------")
     print("")
