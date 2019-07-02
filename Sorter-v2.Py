@@ -162,6 +162,7 @@ cpc = float(input("Please enter your expected CPC in numerical format (ie: $2.5 
 print("--------------------------------------------------------")
 
 #TODO Make all this math and cleaning up of the numbers a function
+#TODO Would be better to just send volume and get back a list which has the formatted items so treatment_cost = treatment_data[0], for example
 
 treatment_clicks = treatment_volume * ctr
 treatment_cost = treatment_clicks * cpc
